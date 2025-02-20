@@ -6,7 +6,7 @@ import streamlit as st
 st.set_page_config(page_title="Diabetes Prediction", layout="wide", page_icon="🧑‍⚕️")
 
 # Load the saved diabetes model safely
-diabetes_model_path = r"C:\Users\NAMITHA\OneDrive\Desktop\diabetiesprediction\diabetes_model.sav"
+diabetes_model_path = r"diabetes_model.sav"
 
 if os.path.exists(diabetes_model_path):
     diabetes_model = pickle.load(open(diabetes_model_path, 'rb'))
