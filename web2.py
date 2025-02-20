@@ -66,7 +66,7 @@ if st.button('Diabetes Test Result'):
 # Model Accuracy Button
 if st.button('Show Model Accuracy'):
     try:
-        test_data = pd.read_csv(r"C:\assign\diabetes.csv")
+        test_data = pd.read_csv(r"diabetes[1].csv")
 
         # Ensure 'Outcome' column exists
         if "Outcome" not in test_data.columns:
