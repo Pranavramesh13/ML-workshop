@@ -1,28 +1,64 @@
+import os
 import pickle
-import numpy as np
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestClassifier  # Example model
+import streamlit as st
 
-# Load dataset (replace with your actual dataset)
-X, y = np.random.rand(1000, 8), np.random.randint(0, 2, 1000)
+# Set page configuration
+st.set_page_config(page_title="Diabetes Prediction", layout="wide", page_icon="🧑‍⚕️")
 
-# Split into training & testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+# Load the saved diabetes model
+diabetes_model_path = r"C:\Users\NAMITHA\OneDrive\Desktop\diabetiesprediction\diabetes_model.sav"
+diabetes_model = pickle.load(open(diabetes_model_path, 'rb'))
 
-# Train the model (replace with your actual model)
-model = RandomForestClassifier()
-model.fit(X_train, y_train)
+# Page title
+st.title('Diabetes Prediction using ML')
 
-# Predict and calculate accuracy
-y_pred = model.predict(X_test)
-model_accuracy = accuracy_score(y_test, y_pred)
+# Getting the input data from the user
+col1, col2, col3 = st.columns(3)
 
-# Save model and accuracy
-with open("diabetes_model.sav", "wb") as model_file:
-    pickle.dump(model, model_file)
+with col1:
+    Pregnancies = st.text_input('Number of Pregnancies')
 
-with open("diabetes_accuracy.pkl", "wb") as acc_file:
-    pickle.dump(model_accuracy, acc_file)
+with col2:
+    Glucose = st.text_input('Glucose Level')
 
-print(f"Model Accuracy: {model_accuracy:.2f}")  # Just for checking
+with col3:
+    BloodPressure = st.text_input('Blood Pressure value')
+
+with col1:
+    SkinThickness = st.text_input('Skin Thickness value')
+
+with col2:
+    Insulin = st.text_input('Insulin Level')
+
+with col3:
+    BMI = st.text_input('BMI value')
+
+with col1:
+    DiabetesPedigreeFunction = st.text_input('Diabetes Pedigree Function value')
+
+with col2:
+    Age = st.text_input('Age of the Person')
+
+# Prediction result
+diab_diagnosis = ''
+
+# Creating a button for Prediction
+if st.button('Diabetes Test Result'):
+    try:
+        # Convert input to float
+        user_input = [float(Pregnancies), float(Glucose), float(BloodPressure), float(SkinThickness), 
+                      float(Insulin), float(BMI), float(DiabetesPedigreeFunction), float(Age)]
+        
+        # Make prediction
+        diab_prediction = diabetes_model.predict([user_input])
+
+        # Display result
+        if diab_prediction[0] == 1:
+            diab_diagnosis = 'The person is diabetic'
+        else:
+            diab_diagnosis = 'The person is not diabetic'
+
+        st.success(diab_diagnosis)
+    
+    except ValueError:
+        st.error("Please enter valid numerical values for all fields.")
